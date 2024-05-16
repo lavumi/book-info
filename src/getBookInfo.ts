@@ -1,4 +1,5 @@
 import { requestUrl, stringifyYaml } from "obsidian";
+import {isEmptyObjectType} from "tsutils";
 
 interface getBookInfoOutput {
 	ok: boolean;
@@ -42,7 +43,7 @@ export const getBookInfoResult = async ({
 			throw new Error();
 		}
 
-		const tags: string[] = ["📚Book"];
+		const tags: string[] = [];
 
 		html.querySelectorAll(
 			"#infoset_goodsCate > div.infoSetCont_wrap > dl:nth-child(1) > dd > ul > li > a"
@@ -114,12 +115,14 @@ export const getBookInfoResult = async ({
 				" " +
 				new Date().toTimeString().split(" ")[0].slice(0, 5)
 			}`,
-			tag: `${tag.join(" ")}`,
+			book_tag: `${tag.join(" ")}`,
+			tag: `📚Book`,
 			title: `${title}`,
 			author: `${author.join(", ")}`,
 			category: `${tag[1]}`,
 			publish_date: `${publishDate}`,
 			cover_url: `${coverUrl}`,
+			read_date: ""
 		};
 
 		const main = `---\n${stringifyYaml(frontmatter)}---\n`;
